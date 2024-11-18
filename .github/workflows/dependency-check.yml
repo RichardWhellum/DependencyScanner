@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Dependency-Check
         run: |
-          curl -LO https://github.com/jeremylong/DependencyCheck/releases/latest/download/dependency-check-6.5.0-release.zip
+          curl -LO https://github.com/jeremylong/DependencyCheck/releases/tag/v11.1.0/dependency-check-11.1.0-release.zip
           unzip dependency-check-6.5.0-release.zip -d dependency-check
           dependency-check/bin/dependency-check.sh --project "MyProject" --scan . --format HTML --out dependency-check-report.html
 
