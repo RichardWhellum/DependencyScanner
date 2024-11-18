@@ -1,0 +1,34 @@
+name: Dependency-Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Dependency-Check
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11' 
+
+      - name: Run Dependency-Check
+        run: |
+          curl -LO https://github.com/jeremylong/DependencyCheck/releases/latest/download/dependency-check-6.5.0-release.zip
+          unzip dependency-check-6.5.0-release.zip -d dependency-check
+          dependency-check/bin/dependency-check.sh --project "MyProject" --scan . --format HTML --out dependency-check-report.html
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: dependency-check-report
+          path: dependency-check-report.html
