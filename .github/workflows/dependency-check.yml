@@ -24,23 +24,24 @@ jobs:
 
       - name: Install Dependency-Check
         run: |
-          # Download and unzip Dependency-Check
+          # Download the Dependency-Check zip file to a directory in the repository
+          mkdir -p dependency-check-assets
           curl -LO https://github.com/jeremylong/DependencyCheck/releases/download/v11.1.0/dependency-check-11.1.0-release.zip
-          unzip dependency-check-11.1.0-release.zip -d dependency-check
+          mv dependency-check-11.1.0-release.zip ./dependency-check-assets
+
+          # Unzip the file to a folder inside the repository
+          unzip ./dependency-check-assets/dependency-check-11.1.0-release.zip -d ./dependency-check-assets/dependency-check
 
           # Set the NVD API key for faster downloads
           export NVD_API_KEY=${{ secrets.NVD_API_KEY }}
 
-          # Ensure the directory exists and run Dependency-Check from the correct location
-          cd dependency-check/dependency-check
-
           # Run Dependency-Check with the NVD API key
-          ./bin/dependency-check.sh \
+          ./dependency-check-assets/dependency-check/dependency-check/bin/dependency-check.sh \
             --project "MyProject" \
             --scan . \
             --format HTML \
-            --out ../dependency-check-report.html \
-            --nvdApiKey $NVD_API_KEY
+            --out dependency-check-assets/dependency-check-report.html \
+            --nvd-api-key $NVD_API_KEY
 
       - name: Add Dependency-Check Files to Repository
         run: |
