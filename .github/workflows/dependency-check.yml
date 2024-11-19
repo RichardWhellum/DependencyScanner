@@ -41,7 +41,7 @@ jobs:
             --scan . \
             --format HTML \
             --out dependency-check-assets/dependency-check-report.html \
-            --nvdapikey $NVD_API_KEY
+            --nvdApiKey $NVD_API_KEY
 
       - name: Add Dependency-Check Files to Repository
         run: |
