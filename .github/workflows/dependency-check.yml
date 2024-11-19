@@ -42,8 +42,18 @@ jobs:
             --out ../dependency-check-report.html \
             --nvdApiKey $NVD_API_KEY
 
+      - name: Add Dependency-Check Files to Repository
+        run: |
+          # Add the downloaded files (zip and reports) to the repository
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add dependency-check-assets/dependency-check-11.1.0-release.zip
+          git add dependency-check-assets/dependency-check-report.html
+          git commit -m "Add Dependency-Check files and report"
+          git push
+
       - name: Upload Report
         uses: actions/upload-artifact@v3
         with:
           name: dependency-check-report
-          path: dependency-check-report.html
+          path: dependency-check-assets/dependency-check-report.html
