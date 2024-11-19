@@ -20,44 +20,13 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '11'
-
-      - name: Set up NVD data directory
-        run: |
-          # Set the path where the NVD data will be stored
-          export NVD_DATA_DIR="${GITHUB_WORKSPACE}/nvd-data"
-
-          # Check if NVD data already exists
-          if [ ! -d "$NVD_DATA_DIR" ]; then
-            echo "No NVD data found. Downloading..."
-            # If no data exists, download and save it
-            curl -LO https://github.com/jeremylong/DependencyCheck/releases/download/v11.1.0/dependency-check-11.1.0-release.zip
-            unzip dependency-check-11.1.0-release.zip -d dependency-check
-
-            # Run Dependency-Check to download the full NVD data
-            ./dependency-check/dependency-check/bin/dependency-check.sh \
-              --project "MyProject" \
-              --scan . \
-              --format HTML \
-              --out dependency-check-report.html \
-              --data $NVD_DATA_DIR \
-              --noupdate  # Skip further updates to avoid fetching the full data on first run
-            echo "NVD data downloaded and stored."
-
-          else
-            echo "NVD data already exists. Skipping full download."
-          fi
+          java-version: '11' 
 
       - name: Run Dependency-Check
         run: |
-          # Run Dependency-Check with local data (update only if necessary)
-          ./dependency-check/dependency-check/bin/dependency-check.sh \
-            --project "MyProject" \
-            --scan . \
-            --format HTML \
-            --out dependency-check-report.html \
-            --data $NVD_DATA_DIR \
-            --noupdate  # Skip updates to avoid fetching the full data on subsequent runs
+          curl -LO https://github.com/jeremylong/DependencyCheck/releases/download/v11.1.0/dependency-check-11.1.0-release.zip
+          unzip dependency-check-11.1.0-release.zip -d dependency-check
+          dependency-check/bin/dependency-check.sh --project "MyProject" --scan . --format HTML --out dependency-check-report.html
 
       - name: Upload Report
         uses: actions/upload-artifact@v3
