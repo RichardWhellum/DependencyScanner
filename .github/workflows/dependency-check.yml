@@ -20,13 +20,24 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '11' 
+          java-version: '11'
 
       - name: Run Dependency-Check
         run: |
+          # Download and unzip Dependency-Check
           curl -LO https://github.com/jeremylong/DependencyCheck/releases/download/v11.1.0/dependency-check-11.1.0-release.zip
           unzip dependency-check-11.1.0-release.zip -d dependency-check
-          dependency-check/bin/dependency-check.sh --project "MyProject" --scan . --format HTML --out dependency-check-report.html
+
+          # Set the NVD API key for faster downloads
+          export NVD_API_KEY=${{ secrets.NVD_API_KEY }}
+
+          # Run Dependency-Check with the NVD API key
+          dependency-check/bin/dependency-check.sh \
+            --project "MyProject" \
+            --scan . \
+            --format HTML \
+            --out dependency-check-report.html \
+            --nvd-api-key $NVD_API_KEY
 
       - name: Upload Report
         uses: actions/upload-artifact@v3
