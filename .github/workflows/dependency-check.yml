@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Run Dependency-Check
+      - name: Install Dependency-Check
         run: |
           # Download and unzip Dependency-Check
           curl -LO https://github.com/jeremylong/DependencyCheck/releases/download/v11.1.0/dependency-check-11.1.0-release.zip
