@@ -38,7 +38,7 @@ jobs:
             --format HTML \
             --out dependency-check-report.html \
             --data $NVD_DATA_DIR \
-            --no-update # Skip updates to avoid fetching the full data
+            --noupdate # Skip updates to avoid fetching the full data
 
       - name: Upload Report
         uses: actions/upload-artifact@v3
