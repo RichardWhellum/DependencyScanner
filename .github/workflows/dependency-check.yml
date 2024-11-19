@@ -48,7 +48,6 @@ jobs:
           # Add the downloaded files (zip and reports) to the repository
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add dependency-check-assets/dependency-check-11.1.0-release.zip
           git add dependency-check-assets/dependency-check-report.html
           git commit -m "Add Dependency-Check files and report"
           git push
