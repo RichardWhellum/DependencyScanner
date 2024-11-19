@@ -31,12 +31,15 @@ jobs:
           # Set the NVD API key for faster downloads
           export NVD_API_KEY=${{ secrets.NVD_API_KEY }}
 
+          # Ensure the directory exists and run Dependency-Check from the correct location
+          cd dependency-check/dependency-check
+
           # Run Dependency-Check with the NVD API key
-          dependency-check/bin/dependency-check.sh \
+          ./bin/dependency-check.sh \
             --project "MyProject" \
             --scan . \
             --format HTML \
-            --out dependency-check-report.html \
+            --out ../dependency-check-report.html \
             --nvd-api-key $NVD_API_KEY
 
       - name: Upload Report
@@ -44,4 +47,3 @@ jobs:
         with:
           name: dependency-check-report
           path: dependency-check-report.html
- 
