@@ -22,16 +22,23 @@ jobs:
           distribution: 'temurin'
           java-version: '11' 
 
-      - name: Install Dependency-Check
-        run: |
-          curl -LO https://github.com/jeremylong/DependencyCheck/releases/download/v11.1.0/dependency-check-11.1.0-release.zip
-          unzip dependency-check-11.1.0-release.zip -d dependency-check
-
       - name: Run Dependency-Check
         run: |
-          # Ensure the correct path for dependency-check.sh script
-          chmod +x ./dependency-check/dependency-check/bin/dependency-check.sh
-          ./dependency-check/dependency-check/bin/dependency-check.sh --project "MyProject" --scan . --format HTML --out dependency-check-report.html
+          # Ensure Dependency-Check is set up
+          curl -LO https://github.com/jeremylong/DependencyCheck/releases/download/v11.1.0/dependency-check-11.1.0-release.zip
+          unzip dependency-check-11.1.0-release.zip -d dependency-check
+          
+          # Set the path where the NVD data will be stored
+          export NVD_DATA_DIR="${GITHUB_WORKSPACE}/nvd-data"
+
+          # Run Dependency-Check with local data
+          ./dependency-check/dependency-check/bin/dependency-check.sh \
+            --project "MyProject" \
+            --scan . \
+            --format HTML \
+            --out dependency-check-report.html \
+            --data $NVD_DATA_DIR \
+            --no-update # Skip updates to avoid fetching the full data
 
       - name: Upload Report
         uses: actions/upload-artifact@v3
