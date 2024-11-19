@@ -22,11 +22,16 @@ jobs:
           distribution: 'temurin'
           java-version: '11' 
 
-      - name: Run Dependency-Check
+      - name: Install Dependency-Check
         run: |
           curl -LO https://github.com/jeremylong/DependencyCheck/releases/download/v11.1.0/dependency-check-11.1.0-release.zip
           unzip dependency-check-11.1.0-release.zip -d dependency-check
-          dependency-check/bin/dependency-check.sh --project "MyProject" --scan . --format HTML --out dependency-check-report.html
+
+      - name: Run Dependency-Check
+        run: |
+          # Ensure the correct path for dependency-check.sh script
+          chmod +x ./dependency-check/dependency-check/bin/dependency-check.sh
+          ./dependency-check/dependency-check/bin/dependency-check.sh --project "MyProject" --scan . --format HTML --out dependency-check-report.html
 
       - name: Upload Report
         uses: actions/upload-artifact@v3
