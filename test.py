@@ -8,3 +8,4 @@ def insecure_function():
 
 if __name__ == "__main__":
     insecure_function()
+
