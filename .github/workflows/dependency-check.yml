@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Dependency-Check
         run: |
-          # Download the Dependency-Check zip file to a directory in the repository
+          # Download the Dependency-Check zip file to a directory in the repository 
           mkdir -p dependency-check-assets
           curl -LO https://github.com/jeremylong/DependencyCheck/releases/download/v11.1.0/dependency-check-11.1.0-release.zip
           mv dependency-check-11.1.0-release.zip ./dependency-check-assets
